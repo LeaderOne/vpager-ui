@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {Router, Route, Link} from 'react-router';
+import {Router, Route, Link, browserHistory} from 'react-router';
 import Component from './component';
 import Merchant from './merchant';
 import CreateMerchant from './create-merchant';
@@ -11,7 +11,7 @@ require('bootstrap/dist/css/bootstrap.css');
 // const location = `${pathname}${search}${hash}`
 
 render((
-    <Router>
+    <Router history={browserHistory}>
         <Route path="/" component={Component}/>
         <Route path="/merchant" component={CreateMerchant}/>
         <Route path="/merchant/:merchantId" component={Merchant}/>
