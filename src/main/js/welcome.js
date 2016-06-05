@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, browserHistory} from 'react-router';
 
-export default class Component extends React.Component {
+export default class Welcome extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         const merchantId = event.target.elements[1].value;

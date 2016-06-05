@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "start": "webpack-dev-server -p --define process.env.server='localhost:9084' --content-base target"
+    "start-dev": "webpack-dev-server -p --define process.env.server='localhost:9084' --content-base target",
+    "start": "node main.js"
   },
   "repository": {
     "type": "git",
