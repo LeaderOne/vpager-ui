@@ -22,8 +22,8 @@ module.exports = {
     },
     output: {
         path: PATHS.build,
-        filename: '/bundle.js',
-        sourceMapFilename: '/bundle.map'
+        filename: 'bundle.js',
+        sourceMapFilename: 'bundle.map'
     },
     module: {
         loaders: [

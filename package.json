@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack",
     "start-dev": "webpack-dev-server -p --define process.env.server='localhost:9084' --content-base target",
-    "start": "node main.js"
+    "start": "babel-node main.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
     "html-webpack-plugin": "^2.18.0",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.1",
+    "webpack-dev-middleware": "^1.6.1",
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {

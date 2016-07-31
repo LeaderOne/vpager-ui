@@ -2,7 +2,14 @@ import React from 'react';
 
 
 export default class TakeTicket extends React.Component {
-    getNewTicket() {
+    constructor(props) {
+        super(props);
+        this.getNewTicket = this.getNewTicket.bind(this);
+    }
+
+    getNewTicket(e) {
+        e.preventDefault();
+
         let merchantId = this.props.params.merchantId;
 
         console.log("Taking new ticket for merchant " + merchantId);

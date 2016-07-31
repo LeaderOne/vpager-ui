@@ -28,7 +28,7 @@ export default class CreateMerchant extends React.Component {
     }
 
     render() {
-        let custLink = "http://zealcon.com/merchant/" + this.state.merchantId;
+        let custLink = "http://localhost/merchant/tickets/take-ticket" + this.state.merchantId;
         let merchantLink = "http://" + this.state.server + "/merchant/" + this.state.merchantId + "/hangoutashingle";
 
         return <div className="container">

@@ -15,6 +15,7 @@ require('bootstrap/dist/css/bootstrap.css');
 render((
     <Router history={browserHistory}>
         <Route path="/" component={Welcome}/>
+        <Route path="/home" component={Welcome} />
         <Route path="/merchant" component={CreateMerchant}/>
         <Route path="/merchant/:merchantId" component={Merchant}/>
         <Route path="/merchant/:merchantId/tickets/take-ticket" component={TakeTicket} />
