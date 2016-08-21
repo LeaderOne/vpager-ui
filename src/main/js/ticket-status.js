@@ -10,6 +10,8 @@ export default class TicketStatus extends React.Component {
 
         this.connectToService = this.connectToService.bind(this);
         this.getPlaceInLine = this.getPlaceInLine.bind(this);
+        this.updatePlacement = this.updatePlacement.bind(this);
+        this.alertUser = this.alertUser.bind(this);
         
         this.state = {
             placeInLine: -1
@@ -28,8 +30,32 @@ export default class TicketStatus extends React.Component {
 
         client.connect({}, (frame) => {
             console.log("Connected to: " + frame);
-            client.subscribe(nowServingTopic, this.getPlaceInLine)
+            client.subscribe(nowServingTopic, this.updatePlacement)
         })
+    }
+
+    updatePlacement(nowServing) {
+        var ticketId = this.props.params.ticketId;
+        let numberUrl = "/services/ticket/" + this.props.params.merchantId + "/" + ticketId;
+
+        agent
+            .get(numberUrl)
+            .send({})
+            .then((response) => {
+                var placeInLine = response.body;
+                let nowServingCustomer = JSON.parse(nowServing.body).nowServingCustomer;
+
+                console.log("Now serving " + nowServingCustomer + " ticket " + ticketId);
+                if(nowServingCustomer == ticketId) {
+                    this.alertUser();
+                }
+
+                if(placeInLine < 3) {
+                    this.notifyUser();
+                }
+
+                this.setState({placeInLine: placeInLine});
+            });
     }
 
     getPlaceInLine() {
@@ -42,9 +68,44 @@ export default class TicketStatus extends React.Component {
             });
     }
 
+    checkNotifications() {
+        if(!("Notification" in window)) {
+            alert("This browser doesn't support notifications.  You'll need to watch the page for your number.");
+        } else if(Notification.permission !== 'granted') {
+            Notification.requestPermission(function(permission) {
+                if(permission === "denied") {
+                    alert("You have turned off notifications.  You'll need to watch the page for your number, or reload the page.");
+                }
+            });
+        }
+    }
+
+    alertUser() {
+        let options = {body: "You are first in line!"};
+
+        let notification = new Notification("Your order is ready!", options);
+        window.navigator.vibrate([1000,50,1000,50,2000]);
+
+        let userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+        if( userAgent.match( /iPad/i ) || userAgent.match( /iPhone/i ) || userAgent.match( /iPod/i ) ) {
+            alert("Your order is ready!");
+
+        } else {
+            document.getElementById("alarm-sound").play();
+        }
+    }
+    
+    notifyUser() {
+        var options = {body: "Your order is almost ready!"};
+
+        var notification = new Notification("Your order is almost ready!");
+    }
+
     componentDidMount() {
         this.connectToService();
         this.getPlaceInLine();
+        this.checkNotifications();
     }
 
     render() {
