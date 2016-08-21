@@ -1,4 +1,7 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
+import agent from 'superagent';
+require('superagent-as-promised')(agent);
 
 
 export default class TakeTicket extends React.Component {
@@ -11,14 +14,23 @@ export default class TakeTicket extends React.Component {
         e.preventDefault();
 
         let merchantId = this.props.params.merchantId;
+        let takeUrl = "/services/ticket/" + merchantId;
 
-        console.log("Taking new ticket for merchant " + merchantId);
+        console.log("Asking for ticket from " + takeUrl);
+
+        agent.put(takeUrl).then((resp) => {
+            let ticketId = resp.body.id;
+
+            console.log("Got ticket number " + ticketId + " for merchant number " + merchantId);
+
+            browserHistory.push("/merchant/" + merchantId + "/tickets/" + ticketId);
+        });
     }
 
     render() {
         return <div className="container">
             <form className="form-inline" onSubmit={this.getNewTicket}>
-                <button type="submit" className="btn btn-default">Take a ticket</button>
+                <button type="submit" className="btn btn-lg btn-primary">Take a ticket</button>
             </form>
         </div>
     }
