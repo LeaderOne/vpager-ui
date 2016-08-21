@@ -30,9 +30,9 @@ export default class CustomerServiceBox extends React.Component {
         })
     }
 
-    setCustomerNumber(nowServingCustomerMessage) {
-        console.log("Now setting customer number " + nowServingCustomerMessage.body);
-        this.setState({nowServingCustomer: JSON.parse(nowServingCustomerMessage.body)});
+    setCustomerNumber(nowServingCustomer) {
+        console.log("Now setting customer number " + nowServingCustomer);
+        this.setState({nowServingCustomer: nowServingCustomer});
     }
 
     getNumbersForInitialState() {
@@ -58,10 +58,19 @@ export default class CustomerServiceBox extends React.Component {
 
     serveCustomer() {
         agent
-            .post(this.props.serveUrl)
+            .post(this.props.servingUrl)
             .send({})
             .then((response) => {
-                console.log("Received response: " + response);
+                let nowServingCustomer = response.body;
+                
+                agent
+                    .get(this.props.lineLenUrl)
+                    .then((response) => {
+                        console.log("Setting state from " + this.props.lineLenUrl);
+                        let lineLength = response.body;
+
+                        this.setState({nowServingCustomer: nowServingCustomer, lineLength: lineLength});
+                    });
             });
     }
 
@@ -70,7 +79,7 @@ export default class CustomerServiceBox extends React.Component {
             .post(this.props.rewindUrl)
             .send({})
             .then((response) => {
-                console.log("Received response from rewind ticket: " + response);
+                this.setCustomerNumber(response.body);
             });
     }
 

@@ -16,12 +16,8 @@ export default class TakeTicket extends React.Component {
         let merchantId = this.props.params.merchantId;
         let takeUrl = "/services/ticket/" + merchantId;
 
-        console.log("Asking for ticket from " + takeUrl);
-
         agent.put(takeUrl).then((resp) => {
             let ticketId = resp.body.id;
-
-            console.log("Got ticket number " + ticketId + " for merchant number " + merchantId);
 
             browserHistory.push("/merchant/" + merchantId + "/tickets/" + ticketId);
         });
