@@ -9,7 +9,7 @@ export default class Merchant extends React.Component {
         let lineLenUrl = "/services/merchant/" + this.props.params.merchantId + "/lineLength";
         let nowServingUrl = "/services/merchant/" + this.props.params.merchantId;
         let nowServingSocket = "/services/nowserving";
-        let nowServingTopic = "/services/topic/nowserving/" + this.props.params.merchantId;
+        let nowServingTopic = "/topic/nowserving/" + this.props.params.merchantId;
         let serveUrl = "/services/merchant/" + this.props.params.merchantId + "/serve";
         let rewindUrl = "/services/merchant/" + this.props.params.merchantId + "/rewind";
 
