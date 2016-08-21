@@ -30,11 +30,15 @@
   "dependencies": {
     "bootstrap": "^3.3.6",
     "file-loader": "^0.8.5",
+    "net": "^1.0.2",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-router": "^2.4.1",
-    "sockjs": "^0.3.17",
+    "sockjs-client": "1.0.0",
+    "webstomp-client": "~1.0.3",
     "superagent": "^2.0.0",
+    "superagent-as-promised": "^4.0.0",
+    "tls": "0.0.1",
     "url-loader": "^0.5.7"
   }
 }

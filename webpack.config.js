@@ -23,7 +23,7 @@ module.exports = {
     output: {
         path: PATHS.build,
         filename: 'bundle.js',
-        sourceMapFilename: 'bundle.map'
+        sourceMapFilename: './bundle.js.map'
     },
     module: {
         loaders: [
@@ -42,5 +42,6 @@ module.exports = {
             { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml" }
         ]
     },
-    plugins: [HTMLWebpackPluginConfig]
+    plugins: [HTMLWebpackPluginConfig],
+    devtool: 'source-map'
 };
