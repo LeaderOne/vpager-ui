@@ -1,19 +1,20 @@
 import React from 'react';
 import request from 'superagent';
-import AppConfig from './components/AppConfig';
+
+let hostname = window.location.hostname;
 
 export default class CreateMerchant extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            server: AppConfig.getServicesUrl(),
             merchantId: 0
         }
     }
     
-    componentWillMount() {
-        let url = "http://" + this.state.server + "/merchant/create";
+    componentDidMount() {
+        console.log('Hostname is ', hostname);
+        let url = "/services/merchant/create";
 
         console.log(url);
 
@@ -29,8 +30,8 @@ export default class CreateMerchant extends React.Component {
     }
 
     render() {
-        let custLink = "http://" + AppConfig.getServicesUrl() + "/merchant/tickets/take-ticket/" + this.state.merchantId;
-        let merchantLink = "http://" + this.state.server + "/merchant/" + this.state.merchantId + "/hangoutashingle";
+        let custLink = "/merchant/" + this.state.merchantId + "/tickets/take-ticket";
+        let merchantLink = "/services/merchant/" + this.state.merchantId + "/hangoutashingle";
 
         return <div className="container">
             <h1>Your new merchant ID is {this.state.merchantId}</h1>

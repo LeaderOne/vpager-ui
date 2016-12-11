@@ -12,7 +12,9 @@ export default class TicketStatus extends React.Component {
         this.getPlaceInLine = this.getPlaceInLine.bind(this);
         this.updatePlacement = this.updatePlacement.bind(this);
         this.alertUser = this.alertUser.bind(this);
-        
+        this.client = null;
+        this.socket = null;
+
         this.state = {
             placeInLine: -1
         };
@@ -24,13 +26,11 @@ export default class TicketStatus extends React.Component {
         let nowServingSocket = "/services/nowserving";
         let nowServingTopic = "/topic/nowserving/" + this.props.params.merchantId;
 
-        console.log("Now serving socket is: " + nowServingSocket);
-        let socket = new SockJS(nowServingSocket);
-        let client = Stomp.over(socket);
+        this.socket = new SockJS(nowServingSocket);
+        this.client = Stomp.over(this.socket);
 
-        client.connect({}, (frame) => {
-            console.log("Connected to: " + frame);
-            client.subscribe(nowServingTopic, this.updatePlacement)
+        this.client.connect({}, (frame) => {
+            this.subscription = this.client.subscribe(nowServingTopic, this.updatePlacement)
         })
     }
 
@@ -45,12 +45,9 @@ export default class TicketStatus extends React.Component {
                 var placeInLine = response.body;
                 let nowServingCustomer = JSON.parse(nowServing.body).nowServingCustomer;
 
-                console.log("Now serving " + nowServingCustomer + " ticket " + ticketId);
                 if(nowServingCustomer == ticketId) {
                     this.alertUser();
-                }
-
-                if(placeInLine < 3) {
+                } else if(placeInLine < 3) {
                     this.notifyUser();
                 }
 
@@ -108,7 +105,16 @@ export default class TicketStatus extends React.Component {
         this.checkNotifications();
     }
 
+    componentWillUnmount() {
+        this.client.unsubscribe(this.subscription);
+        this.socket.close();
+    }
+
     render() {
+        if(this.state.placeInLine == -1) {
+            return <div className="container">Please wait...</div>;
+        }
+
         let ticketId = this.props.params.ticketId;
 
         return <div className="container">
